@@ -32,13 +32,7 @@ public class Ship : MonoBehaviour, IFlow
 
     public void Refresh()
     {
-        if (Input.GetKey(KeyCode.Space))
-        {
-            rb.AddRelativeForce(Vector2.up * speed);
-
-            //TODO: Image des thrust qui grandit avec la force
-            //ThrustOn() qui change scale de thrust et appelle le sound
-        }
+    
         #region Commentaire Thrust
         //if (trhustOn)
         //{
@@ -60,12 +54,12 @@ public class Ship : MonoBehaviour, IFlow
         //}  
         #endregion
                
-        if (Input.GetKey(KeyCode.A ) || Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.A ) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             rb.AddTorque(torque);
         }
 
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             rb.AddTorque(-torque);
         }
@@ -74,6 +68,13 @@ public class Ship : MonoBehaviour, IFlow
     public void PhysicsRefresh()
     {
         //caching input of the player and verifiy if it has been used to call physics functions in here.
+        if (Input.GetKey(KeyCode.Space))
+        {
+            rb.AddRelativeForce(Vector2.up * speed);
+
+            //TODO: Image des thrust qui grandit avec la force
+            //ThrustOn() qui change scale de thrust et appelle le sound
+        }
     }
 
     public void EndGame()

@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Biggest
+  - Middle
+  - Small
   layers:
   - Default
   - TransparentFX
@@ -40,4 +43,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2443921335
+    locked: 0
+  - name: Asteroid
+    uniqueID: 315696891
+    locked: 0
+  - name: Laser
+    uniqueID: 4255557231
+    locked: 0
+  - name: Player
+    uniqueID: 2318268267
     locked: 0
