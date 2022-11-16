@@ -1,8 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-
-
 
 public class EnemySpawner
 {
@@ -18,9 +15,10 @@ public class EnemySpawner
 
         for (int i = 0; i < nbAsteroids; i++)
         {
-            IFlow iflow = SpawnBiggestAsteroid();
+            IFlow iflow = SpawnAsteroid(Asteroids.Level.Biggest, new Vector2(0,0));
             list.Add(iflow);
         }
+
         //spawn aliens eventually
         if (nbAliens != 0)
         {
@@ -30,56 +28,46 @@ public class EnemySpawner
         return list;
     }
 
-    public IFlow SpawnBiggestAsteroid()
+    public IFlow SpawnAsteroid(Asteroids.Level size, Vector2 position)
     {
-        IFlow iflow;
-        float x = Random.Range(-10, 10f);
-        float y = Random.Range(-5, 5f);
         int index = 0;
 
-        GameObject asteroid = GameObject.Instantiate(AsteroidsPrefabs[index]);
-        iflow = asteroid.GetComponent<IFlow>();
-        asteroid.GetComponent<Asteroids>().level = Asteroids.Level.Biggest;
+        GameObject goClone = GameObject.Instantiate(AsteroidsPrefabs[index]);        
+        Asteroids asteroid = goClone.GetComponent<Asteroids>();
 
-        asteroid.transform.position = new Vector2(x, y);
-        asteroid.transform.localScale = new Vector2(asteroidBiggestSize, asteroidBiggestSize);
 
-        return iflow;
-    }
+        switch (size)
+        {
+            case Asteroids.Level.Biggest:
+                float x = Random.Range(-10, 10f);
+                float y = Random.Range(-5, 5f);
 
-    public IFlow SpawnMiddleAsteroid(Vector2 position)
-    {
-        IFlow iflow;
-        int index = 0;
+                goClone.transform.position = new Vector2(x, y);
+                asteroid.level = Asteroids.Level.Biggest;
+                goClone.transform.localScale = new Vector2(asteroidBiggestSize, asteroidBiggestSize);
 
-        GameObject go = GameObject.Instantiate(AsteroidsPrefabs[index]);
-        iflow = go.GetComponent<IFlow>();
-        Asteroids asteroid = go.GetComponent<Asteroids>();
-        Rigidbody2D rb = go.GetComponent<Rigidbody2D>();
+                break;
 
-        asteroid.level = Asteroids.Level.Middle;
-        go.transform.position = position;
-        asteroid.SetSize();
-        asteroid.SetDirection(rb);
+            case Asteroids.Level.Middle:
 
-        return iflow;
-    }
+                goClone.transform.position = position;
+                asteroid.level = Asteroids.Level.Middle;
+                goClone.transform.localScale = new Vector2(asteroidMiddleSize, asteroidMiddleSize);
 
-    public IFlow SpawnSmallAsteroid(Vector2 position)
-    {
-        IFlow iflow;
-        int index = 0;
+                break;
 
-        GameObject go = GameObject.Instantiate(AsteroidsPrefabs[index]);
-        iflow = go.GetComponent<IFlow>();
-        Asteroids asteroid = go.GetComponent<Asteroids>();
-        Rigidbody2D rb = go.GetComponent<Rigidbody2D>();
+            case Asteroids.Level.Small:
+                goClone.transform.position = position;
+                asteroid.level = Asteroids.Level.Small;
+                goClone.transform.localScale = new Vector2(asteroidSmallSize, asteroidSmallSize);
+                break;
 
-        asteroid.level = Asteroids.Level.Small;
-        go.transform.position = position;
-        asteroid.SetSize();
-        asteroid.SetDirection(rb);
+            default:
+                break;
+        }
 
-        return iflow;
+        asteroid.SetDirection(goClone.GetComponent<Rigidbody2D>());
+
+        return goClone.GetComponent<IFlow>();
     }
 }

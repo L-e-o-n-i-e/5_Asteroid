@@ -26,7 +26,7 @@ public class EnemyManager : IFlow
     private List<IFlow> iflowList;
 
     public void AddAsteroid(GameObject goPrefab)
-    {
+    {        
         if (enemySpawner == null)
         {
             enemySpawner = new EnemySpawner();
@@ -37,7 +37,8 @@ public class EnemyManager : IFlow
 
     public void PreInitialize()
     {
-        Debug.Log("Je suis Ennemy manager! ");
+        Debug.Log("Instance of EnemyManager");
+
 
         iflowList = enemySpawner.StartLevel(nbAsteroidToSpawn);
 
@@ -91,7 +92,7 @@ public class EnemyManager : IFlow
 
     public void SpawnAsteroid(Asteroids.Level size, Vector2 pos)
     {
-        //enemySpawner.SpawnAsteroid()
+        enemySpawner.SpawnAsteroid(size, pos);
     }
 
     public void AsteroidDied(Asteroids dyingAsteroid)
@@ -103,24 +104,36 @@ public class EnemyManager : IFlow
         switch (asteroidLevel)
         {
             case Asteroids.Level.Biggest:
+
                 for (int i = 0; i < 2; i++)
                 {
-                    IFlow toAdd = enemySpawner.SpawnMiddleAsteroid(position);
+                    IFlow toAdd = enemySpawner.SpawnAsteroid(Asteroids.Level.Middle, position);
                     AddToList(toAdd);
                 }
                 break;
             case Asteroids.Level.Middle:
+
                 for (int i = 0; i < 2; i++)
                 {
-                    IFlow toAdd = enemySpawner.SpawnSmallAsteroid(position);
+                    IFlow toAdd = enemySpawner.SpawnAsteroid(Asteroids.Level.Small, position);
                     AddToList(toAdd);
                 }
                 break;
+            case Asteroids.Level.Small:
+
+                break;
             default:
-                Debug.Log("AsteroidDied default case, small size asteroid would end up here.");
+                Debug.Log("AsteroidDied default case.");
                 break;
         }       
 
         RemoveFromList(iflow);
+    }
+
+    public void AllEnemiesDied()
+    {
+        int level = LevelManager.Instance.IncreaseLevel();
+        //reset new level with nb of asteroids according to it
+        //call to ShipManager to reset for a new level
     }
 }

@@ -4,7 +4,8 @@ using UnityEngine.Events;
 
 public class Asteroids : MonoBehaviour, IFlow
 {
-    public float speed = 5;
+    public float speed = 3;
+    public float speedSmallAsteroids = 6;
     public float torque = 10;
 
     Rigidbody2D rb;
@@ -19,6 +20,7 @@ public class Asteroids : MonoBehaviour, IFlow
 
     public void PreInitialize()
     {
+        Debug.Log("Asteroid preinitialize!");
         rb = GetComponent<Rigidbody2D>();
         SetDirection(rb);
         SetSize();
@@ -44,13 +46,23 @@ public class Asteroids : MonoBehaviour, IFlow
 
     public void SetDirection(Rigidbody2D rb)
     {
+
         float x = Random.Range(-1, 1f);
         float y = Random.Range(-1, 1f);
-        rb.velocity = new Vector2(x, y).normalized * speed;
+
+        if (level == Level.Small)
+        {
+            rb.velocity = new Vector2(x, y).normalized * speedSmallAsteroids;
+        }
+        else
+        {           
+            rb.velocity = new Vector2(x, y).normalized * speed;
+        }
     }
+
     public void Initialize()
     {
-
+        Debug.Log("Asteroids Initialized");
     }
 
 
@@ -78,7 +90,7 @@ public class Asteroids : MonoBehaviour, IFlow
 
     public void PhysicsRefresh()
     {
-        Debug.Log("PhysicsRefresh asteroid");
+
     }
 
 

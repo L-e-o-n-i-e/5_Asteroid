@@ -121,10 +121,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
+  speedSmallAsteroids: 5
   torque: 5
-  onHit:
-    m_PersistentCalls:
-      m_Calls: []
+  level: 0
   biggestSize: 2
   middleSize: 1
   smallSize: 0.5

@@ -26,8 +26,11 @@ public class Flow
     {
         //populer la liste des managers qui implementent 
         listManagers.Add(ShipManager.Instance);
-        //listManagers.Add(BulletManager.Instance);
+        listManagers.Add(BulletManager.Instance);
         listManagers.Add(EnemyManager.Instance);
+        //listManagers.Add(LevelManager.Instance);
+        //listManagers.Add(UIManager.Instance);
+
         
         foreach (var manager in listManagers)
         {

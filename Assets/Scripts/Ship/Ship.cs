@@ -6,6 +6,9 @@ public class Ship : MonoBehaviour, IFlow
     Rigidbody2D rb;
     public float speed = 10;
     public float torque = 10;
+    public Transform tip;
+    float timeBeforeShoot = 0.3f;
+    float timeOfSpawn;
 
     #region Thrust
     bool trhustOn = false;
@@ -32,7 +35,7 @@ public class Ship : MonoBehaviour, IFlow
 
     public void Refresh()
     {
-    
+
         #region Commentaire Thrust
         //if (trhustOn)
         //{
@@ -53,8 +56,8 @@ public class Ship : MonoBehaviour, IFlow
 
         //}  
         #endregion
-               
-        if (Input.GetKeyDown(KeyCode.A ) || Input.GetKeyDown(KeyCode.LeftArrow))
+
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             rb.AddTorque(torque);
         }
@@ -62,6 +65,24 @@ public class Ship : MonoBehaviour, IFlow
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             rb.AddTorque(-torque);
+        }
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        {
+            if (Time.time - timeOfSpawn >= timeBeforeShoot)
+            {
+                Shoot();
+            }
+        }
+
+        if (gameObject != null)
+        {
+            Vector3 pos = transform.position;
+            //Camera Size, OnTriggerEnter, reposition
+            if (pos.x < -9 || pos.x > 9 || pos.y < -5 || pos.y > 5)
+            {
+                transform.position = new Vector3(Mathf.Round(pos.x), Mathf.Round(pos.y), 0) * -1;
+                transform.localEulerAngles += new Vector3(0,0,0.5f);
+            }
         }
     }
 
@@ -79,5 +100,20 @@ public class Ship : MonoBehaviour, IFlow
 
     public void EndGame()
     {
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        //ShipManager.Instance.ShipDied();
+
+        //GameObject.Destroy(gameObject);        
+    }
+
+    public void Shoot()
+    {
+        timeOfSpawn = Time.time;
+
+        BulletManager.Instance.SpawnBullet(rb, tip);
+
     }
 }
