@@ -22,20 +22,21 @@ public class LevelManager
     #endregion
 
     public int level = 1;
-    bool newGame = true;
 
-    public int IncreaseLevel()
+    public void IncreaseLevel()
     {
-        return level++;
+        level++;
+        GoToNextLevel(); 
     }
 
     public void startLevelEntry()
     {
         level = 1;
-
         UIManager.Instance.ResetLifes();
         UIManager.Instance.ResetScore();
         EnemyManager.Instance.ClearAllAsteroids();
+        BulletManager.Instance.ClearAllBullets();
+        BulletManager.Instance.DestroyAllBullets();
         EnemyManager.Instance.PreInitialize();
         ShipManager.Instance.PreInitialize();
         BulletManager.Instance.PreInitialize();
@@ -45,17 +46,19 @@ public class LevelManager
     {
         Debug.Log("Reset Level");
         EnemyManager.Instance.ClearAllAsteroids();
+        BulletManager.Instance.ClearAllBullets();
         EnemyManager.Instance.PreInitialize();
         ShipManager.Instance.SpawnShip();
-    }
+    } 
 
     public void GoToNextLevel()
     {
         Debug.Log("You win, go to next level");
         UIManager.Instance.ResetLifes();
-        EnemyManager.Instance.SpawnAsteroid(Asteroids.Level.Biggest, new Vector2(0, 0));
+        EnemyManager.Instance.PreInitialize();
         ShipManager.Instance.PreInitialize();
-        BulletManager.Instance.ClearAllBUllets();
+        BulletManager.Instance.ClearAllBullets();
+        BulletManager.Instance.DestroyAllBullets();
         BulletManager.Instance.PreInitialize();
     }
 

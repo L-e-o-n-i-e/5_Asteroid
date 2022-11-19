@@ -28,7 +28,11 @@ public class ShipManager : IFlow
     public void PreInitialize()
     {
         currentShipHp = STARTING_SHIP_HP;
-        SpawnShip();
+
+        if (ship == null)
+        {
+            SpawnShip();
+        }
 
         ship.transform.position = Vector2.zero;
     }

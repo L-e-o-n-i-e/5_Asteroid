@@ -23,9 +23,18 @@ public class BulletManager : IFlow
     GameObject bulletPrefab;
     List<IFlow> iflowList = new List<IFlow>();
     Stack<IFlow> toRemove = new Stack<IFlow>();
-
+    Transform parentOfAllBullets;
+    bool parentCreated = false;
     public void PreInitialize()
     {
+        //Organisation in the hierarchie
+        if (parentCreated == false)
+        {
+            parentOfAllBullets = new GameObject("Bullets").transform;
+            parentCreated = true;
+        }
+
+
         bulletPrefab = Resources.Load<GameObject>("Prefab/Bullet");
 
         if (iflowList != null)
@@ -82,6 +91,9 @@ public class BulletManager : IFlow
         GameObject goClone = GameObject.Instantiate(bulletPrefab, tip.position, Quaternion.identity);
         IFlow iflow = goClone.GetComponent<IFlow>();
 
+        //Set the parent in the hierarchie
+        goClone.transform.SetParent(parentOfAllBullets);
+
         float z = tip.eulerAngles.z;
         goClone.transform.localEulerAngles = new Vector3(0, 0, z);
 
@@ -97,8 +109,14 @@ public class BulletManager : IFlow
         toRemove.Push(todelete);
     }
 
-    public void ClearAllBUllets()
+    public void ClearAllBullets()
     {
-        iflowList.Clear();
+        iflowList.Clear();        
+    }
+
+    public void DestroyAllBullets()
+    {
+        GameObject.Destroy(parentOfAllBullets.gameObject);
+        parentCreated = false;
     }
 }
