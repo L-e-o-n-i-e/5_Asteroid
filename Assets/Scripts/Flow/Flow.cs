@@ -24,12 +24,11 @@ public class Flow
     //Les singleton doivent etre reveilles par qlqun.
     public void PreInitialize()
     {
-        //populer la liste des managers qui implementent 
+        //populer la liste des managers qui implementent IFlow
         listManagers.Add(ShipManager.Instance);
         listManagers.Add(BulletManager.Instance);
         listManagers.Add(EnemyManager.Instance);
-        //listManagers.Add(LevelManager.Instance);
-        //listManagers.Add(UIManager.Instance);
+        listManagers.Add(UIManager.Instance);
 
         
         foreach (var manager in listManagers)

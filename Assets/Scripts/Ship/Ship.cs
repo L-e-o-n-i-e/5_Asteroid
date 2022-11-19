@@ -102,13 +102,6 @@ public class Ship : MonoBehaviour, IFlow
     {
     }
 
-    public void OnCollisionEnter(Collision collision)
-    {
-        //ShipManager.Instance.ShipDied();
-
-        //GameObject.Destroy(gameObject);        
-    }
-
     public void Shoot()
     {
         timeOfSpawn = Time.time;

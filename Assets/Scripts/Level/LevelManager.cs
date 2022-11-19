@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelManager : IFlow
+public class LevelManager 
 {
     #region Singleton
     private static LevelManager instance;
@@ -18,48 +18,45 @@ public class LevelManager : IFlow
 
     }
 
+    private LevelManager() { }
     #endregion
 
     public int level = 1;
-    private LevelManager() { }
-
-    public void PreInitialize()
-    {
-        Debug.Log("PreInitialize LevelManager");
-    }
-
-    public void Initialize()
-    {
-    }
-
-    public void Refresh()
-    {
-    }
-
-    public void PhysicsRefresh()
-    {
-    }
-
-    public void EndGame()
-    {
-    }
+    bool newGame = true;
 
     public int IncreaseLevel()
     {
-       return level++;
+        return level++;
     }
 
     public void startLevelEntry()
     {
         level = 1;
+
+        UIManager.Instance.ResetLifes();
+        UIManager.Instance.ResetScore();
+        EnemyManager.Instance.ClearAllAsteroids();
         EnemyManager.Instance.PreInitialize();
         ShipManager.Instance.PreInitialize();
         BulletManager.Instance.PreInitialize();
     }
 
-    public void ResetSameLevel(int Hp)
+    public void ResetSameLevel()
     {
-        //Give HP info to UI
+        Debug.Log("Reset Level");
+        EnemyManager.Instance.ClearAllAsteroids();
+        EnemyManager.Instance.PreInitialize();
+        ShipManager.Instance.SpawnShip();
     }
-   
+
+    public void GoToNextLevel()
+    {
+        Debug.Log("You win, go to next level");
+        UIManager.Instance.ResetLifes();
+        EnemyManager.Instance.SpawnAsteroid(Asteroids.Level.Biggest, new Vector2(0, 0));
+        ShipManager.Instance.PreInitialize();
+        BulletManager.Instance.ClearAllBUllets();
+        BulletManager.Instance.PreInitialize();
+    }
+
 }

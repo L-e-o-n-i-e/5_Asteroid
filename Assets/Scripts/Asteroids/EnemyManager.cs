@@ -20,10 +20,12 @@ public class EnemyManager : IFlow
     #endregion
 
     //Mon enemy Manager pourrait faire un ressources/load
-    private int nbAsteroidToSpawn = 4;
     private EnemySpawner enemySpawner;
     private Vector2 positionToSpawn;
     private List<IFlow> iflowList;
+
+    private int nbAsteroidToSpawn = 4;
+    bool allEnemiesDied = false;
 
     public void AddAsteroid(GameObject goPrefab)
     {        
@@ -37,9 +39,6 @@ public class EnemyManager : IFlow
 
     public void PreInitialize()
     {
-        Debug.Log("Instance of EnemyManager");
-
-
         iflowList = enemySpawner.StartLevel(nbAsteroidToSpawn);
 
         foreach (var iflow in iflowList)
@@ -61,6 +60,13 @@ public class EnemyManager : IFlow
         foreach (var iflow in iflowList)
         {
             iflow.Refresh();
+        }
+
+        Transform poaa = enemySpawner.GetParentOfAllAsteroids();
+
+        if (poaa.childCount == 0)
+        {
+            AllEnemiesDied();
         }
     }
 
@@ -130,9 +136,17 @@ public class EnemyManager : IFlow
         RemoveFromList(iflow);
     }
 
+    public void ClearAllAsteroids()
+    {
+        enemySpawner.ClearAllAsteroids();
+        iflowList.Clear();
+    }
+
     public void AllEnemiesDied()
     {
+        allEnemiesDied = true;
         int level = LevelManager.Instance.IncreaseLevel();
+
         //reset new level with nb of asteroids according to it
         //call to ShipManager to reset for a new level
     }

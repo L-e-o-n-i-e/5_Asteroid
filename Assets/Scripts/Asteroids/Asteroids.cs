@@ -16,11 +16,13 @@ public class Asteroids : MonoBehaviour, IFlow
     public float biggestSize = 2;
     public float middleSize = 1;
     public float smallSize = 0.5f;
+    public int biggestPoints = 5;
+    public int middlePoints =10 ;
+    public int smallPoints = 20;
     #endregion 
 
     public void PreInitialize()
     {
-        Debug.Log("Asteroid preinitialize!");
         rb = GetComponent<Rigidbody2D>();
         SetDirection(rb);
         SetSize();
@@ -60,12 +62,7 @@ public class Asteroids : MonoBehaviour, IFlow
         }
     }
 
-    public void Initialize()
-    {
-        Debug.Log("Asteroids Initialized");
-    }
-
-
+    
     public void Refresh()
     {
       
@@ -83,9 +80,36 @@ public class Asteroids : MonoBehaviour, IFlow
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log(name + "I've been hit");
+        Debug.Log(collision.collider.name);
 
-        EnemyManager.Instance.AsteroidDied(this);
-        GameObject.Destroy(gameObject);
+        Ship ship;
+        collision.collider.gameObject.TryGetComponent<Ship>(out ship);
+
+        if (ship != null)
+        {            
+            GameObject.Destroy(gameObject);
+            ShipManager.Instance.ShipDied();
+        }
+        else
+        {
+            Level size = collision.otherCollider.gameObject.GetComponent<Asteroids>().level;
+            switch (size)
+            {
+                case Level.Biggest:
+                    UIManager.Instance.UpdateScore(biggestPoints);
+                    break;
+                case Level.Middle:
+                    UIManager.Instance.UpdateScore(middlePoints);
+                    break;
+                case Level.Small:
+                    UIManager.Instance.UpdateScore(smallPoints);
+                    break;
+                default:
+                    break;
+            }
+            EnemyManager.Instance.AsteroidDied(this);
+            GameObject.Destroy(gameObject);
+        }
     }
 
     public void PhysicsRefresh()
@@ -93,10 +117,11 @@ public class Asteroids : MonoBehaviour, IFlow
 
     }
 
-
-
-
     public void EndGame()
+    {
+    }
+
+    public void Initialize()
     {
     }
 }

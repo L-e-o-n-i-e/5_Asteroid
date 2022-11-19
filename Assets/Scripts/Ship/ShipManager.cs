@@ -3,7 +3,9 @@ using UnityEngine;
 public class ShipManager : IFlow
 {
     #region Singleton
+
     private static ShipManager instance;
+
     public static ShipManager Instance
     {
         get
@@ -13,22 +15,20 @@ public class ShipManager : IFlow
 
             return instance;
         }
-
     }
     private ShipManager() { }
     #endregion
 
     public GameObject shipPrefab;
+    GameObject ship;
     IFlow iflow;
-    private int shipHp = 3;
+    private int currentShipHp;
+    private int STARTING_SHIP_HP = 3;
 
     public void PreInitialize()
     {
-        Debug.Log("Instance of ShipManager");
-        GameObject ship = GameObject.Instantiate(shipPrefab);
-        iflow = ship.GetComponent<IFlow>();
-        iflow.PreInitialize();
-
+        currentShipHp = STARTING_SHIP_HP;
+        SpawnShip();
 
         ship.transform.position = Vector2.zero;
     }
@@ -55,25 +55,31 @@ public class ShipManager : IFlow
 
     public void SpawnShip()
     {
-        GameObject ship = GameObject.Instantiate(shipPrefab);
-       iflow = ship.GetComponent<IFlow>();
+        ship = GameObject.Instantiate(shipPrefab);
+        iflow = ship.GetComponent<IFlow>();
         iflow.PreInitialize();
-
     }
 
     public void ShipDied()
     {
-        shipHp--;
+        GameObject.Destroy(ship);
+        
+        currentShipHp--;
+        UIManager.Instance.LoseOneLifeUnit(currentShipHp);
 
-        if (shipHp > 0)
+        if (currentShipHp > 0)
         {
-            LevelManager.Instance.ResetSameLevel(shipHp);
-            SpawnShip();
+            LevelManager.Instance.ResetSameLevel();
         }
         else
-        {
-            //Lose the game and start over to Level 1.
+        {          
+            currentShipHp = STARTING_SHIP_HP;
             LevelManager.Instance.startLevelEntry();
         }
+    }
+
+    public int getShipHp()
+    {
+        return currentShipHp;
     }
 }

@@ -26,8 +26,6 @@ public class BulletManager : IFlow
 
     public void PreInitialize()
     {
-        Debug.Log("Instance of BulletManager");
-
         bulletPrefab = Resources.Load<GameObject>("Prefab/Bullet");
 
         if (iflowList != null)
@@ -62,23 +60,6 @@ public class BulletManager : IFlow
         {
             iflowList[i].Refresh();
         }
-
-        //if (iflowList != null)
-        //{
-
-        //    for (int i = iflowList.Count-1; i >= 0; i--)
-        //    {
-        //        IFlow iflow = iflowList[i];
-        //        if (iflow as UnityEngine.Object == null)
-        //        {
-        //            iflowList.RemoveAt(i);
-        //        }
-        //        else
-        //        {
-        //            iflow.Refresh();
-        //        }
-        //    }
-        //}
     }
 
     public void PhysicsRefresh()
@@ -116,4 +97,8 @@ public class BulletManager : IFlow
         toRemove.Push(todelete);
     }
 
+    public void ClearAllBUllets()
+    {
+        iflowList.Clear();
+    }
 }

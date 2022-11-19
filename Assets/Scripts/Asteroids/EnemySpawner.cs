@@ -7,9 +7,18 @@ public class EnemySpawner
     public float asteroidBiggestSize = 2;
     public float asteroidMiddleSize = 1;
     public float asteroidSmallSize = 0.5f;
+    Transform parentOfAllAsteroids;
+    bool parentCreated = false;
 
     public List<IFlow> StartLevel(int nbAsteroids, int nbAliens = 0)
     {
+        //Organisation in the hierarchie
+        if (parentCreated == false)
+        {
+            parentOfAllAsteroids = new GameObject("Asteroids").transform;
+            parentCreated = true;
+        }
+
         //spawn asteroids
         List<IFlow> list = new List<IFlow>();
 
@@ -35,6 +44,8 @@ public class EnemySpawner
         GameObject goClone = GameObject.Instantiate(AsteroidsPrefabs[index]);        
         Asteroids asteroid = goClone.GetComponent<Asteroids>();
 
+        //Set the parent in the hierarchie
+        goClone.transform.SetParent(parentOfAllAsteroids);
 
         switch (size)
         {
@@ -69,5 +80,16 @@ public class EnemySpawner
         asteroid.SetDirection(goClone.GetComponent<Rigidbody2D>());
 
         return goClone.GetComponent<IFlow>();
+    }
+
+    public void ClearAllAsteroids()
+    {
+        GameObject.Destroy(parentOfAllAsteroids.gameObject);
+        parentCreated = false;
+    }
+
+    public Transform GetParentOfAllAsteroids()
+    {
+        return parentOfAllAsteroids;
     }
 }
