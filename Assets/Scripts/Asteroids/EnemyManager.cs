@@ -19,24 +19,20 @@ public class EnemyManager : IFlow
     private EnemyManager() { }
     #endregion
     
-    private EnemySpawner enemySpawner;
-    private Vector2 positionToSpawn;
+    private EnemySpawner enemySpawner = new EnemySpawner();
+    //private Vector2 positionToSpawn;
     private List<IFlow> iflowList;
 
+    private int NB_ASTEROID_START = 4;
     private int nbAsteroidToSpawn = 4;
 
-    bool allEnemiesDied = false;
+    private bool allEnemiesDied = false;
 
-    public void AddAsteroid(GameObject goPrefab)
+    public void SetAsteroidPrefab(GameObject goPrefab)
     {
-        if (enemySpawner == null)
-        {
-            enemySpawner = new EnemySpawner();
-        }
-
-        enemySpawner.AsteroidsPrefabs.Add(goPrefab);
+        enemySpawner.asteroidPrefab = goPrefab;
     }
-
+  
     public void PreInitialize()
     {
         iflowList = enemySpawner.StartLevel(nbAsteroidToSpawn);
@@ -91,15 +87,11 @@ public class EnemyManager : IFlow
         iflowList.Remove(toRemove);
 
     }
+
     public void AddToList(IFlow toAdd)
     {
         iflowList.Add(toAdd);
     }
-
-    //public void SpawnAsteroid(Asteroids.Level size, Vector2 pos)
-    //{
-    //    enemySpawner.SpawnAsteroid(size, pos);
-    //}
 
     public void AsteroidDied(Asteroids dyingAsteroid)
     {
@@ -146,5 +138,10 @@ public class EnemyManager : IFlow
     {
         nbAsteroidToSpawn++;
         LevelManager.Instance.IncreaseLevel();
+    }
+
+    public void StartOver()
+    {
+        nbAsteroidToSpawn = NB_ASTEROID_START;
     }
 }

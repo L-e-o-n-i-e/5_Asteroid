@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour, IFlow
 
 {
-    public float speed = 6;
+    public float speed = 7;
     Rigidbody2D rb;
     IFlow iflow;
     Vector2 position;

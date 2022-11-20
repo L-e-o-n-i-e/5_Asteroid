@@ -7,7 +7,7 @@ public class Ship : MonoBehaviour, IFlow
     public float speed = 10;
     public float torque = 10;
     public Transform tip;
-    float timeBeforeShoot = 0.3f;
+    float timeBeforeShoot = 0.2f;
     float timeOfSpawn;
 
     #region Thrust
@@ -66,7 +66,7 @@ public class Ship : MonoBehaviour, IFlow
         {
             rb.AddTorque(-torque);
         }
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.Space))
         {
             if (Time.time - timeOfSpawn >= timeBeforeShoot)
             {
@@ -89,7 +89,7 @@ public class Ship : MonoBehaviour, IFlow
     public void PhysicsRefresh()
     {
         //caching input of the player and verifiy if it has been used to call physics functions in here.
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))
         {
             rb.AddRelativeForce(Vector2.up * speed);
 

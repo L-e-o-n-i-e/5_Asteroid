@@ -65,21 +65,20 @@ public class UIManager : IFlow
 
     public void ResetLifes()
     {
-        //int nbChild = panelLife.childCount;
-
-        //startingShipHp = ShipManager.Instance.getShipHp();
-        //int nbToAdd = startingShipHp - nbChild;
         currentShipHp = ShipManager.Instance.getShipHp();
 
+        int nbChild = panelLife.childCount;
+        for (int i = 0; i < nbChild; i++)
+        {
+            GameObject.Destroy(panelLife.GetChild(i).gameObject);
+        }
+      
         for (int i = 0; i < currentShipHp; i++)
         {
             GameObject go = GameObject.Instantiate<GameObject>(imgLifePrefab);
             RectTransform img = go.GetComponent<RectTransform>();
             img.SetParent(panelLife);
-
         }
-
-
     }
 
     public void UpdateScore(int pointsToAdd)

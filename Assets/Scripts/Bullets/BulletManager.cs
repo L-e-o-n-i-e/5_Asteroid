@@ -89,6 +89,8 @@ public class BulletManager : IFlow
         Debug.Log("Bullet spawned");
 
         GameObject goClone = GameObject.Instantiate(bulletPrefab, tip.position, Quaternion.identity);
+        goClone.GetComponent<AudioSource>().Play();
+
         IFlow iflow = goClone.GetComponent<IFlow>();
 
         //Set the parent in the hierarchie

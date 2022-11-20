@@ -20,6 +20,8 @@ public class ShipManager : IFlow
     #endregion
 
     public GameObject shipPrefab;
+    public AudioClip Lose;
+
     GameObject ship;
     IFlow iflow;
     private int currentShipHp;
@@ -44,12 +46,14 @@ public class ShipManager : IFlow
 
     public void Refresh()
     {
-        iflow.Refresh();
+        if (ship != null)
+            iflow.Refresh();
     }
 
     public void PhysicsRefresh()
     {
-        iflow.PhysicsRefresh();
+        if (ship != null)
+            iflow.PhysicsRefresh();
     }
 
     public void EndGame()
@@ -65,9 +69,12 @@ public class ShipManager : IFlow
     }
 
     public void ShipDied()
-    {
+    {        
+        LevelManager.Instance.audioSource.PlayOneShot(Lose);
         GameObject.Destroy(ship);
-        
+        iflow = null;
+        ship = null;
+
         currentShipHp--;
         UIManager.Instance.LoseOneLifeUnit(currentShipHp);
 
@@ -76,14 +83,19 @@ public class ShipManager : IFlow
             LevelManager.Instance.ResetSameLevel();
         }
         else
-        {          
+        {
             currentShipHp = STARTING_SHIP_HP;
-            LevelManager.Instance.startLevelEntry();
+            LevelManager.Instance.StartGame();
         }
     }
 
     public int getShipHp()
     {
         return currentShipHp;
+    }
+
+    public void ResetLifesMax()
+    {
+        currentShipHp = STARTING_SHIP_HP;
     }
 }

@@ -17,7 +17,7 @@ public class Asteroids : MonoBehaviour, IFlow
     public float middleSize = 1;
     public float smallSize = 0.5f;
     public int biggestPoints = 5;
-    public int middlePoints =10 ;
+    public int middlePoints = 10;
     public int smallPoints = 20;
     #endregion 
 
@@ -57,15 +57,14 @@ public class Asteroids : MonoBehaviour, IFlow
             rb.velocity = new Vector2(x, y).normalized * speedSmallAsteroids;
         }
         else
-        {           
+        {
             rb.velocity = new Vector2(x, y).normalized * speed;
         }
     }
-
     
     public void Refresh()
     {
-      
+
         if (gameObject != null)
         {
             Vector3 pos = transform.position;
@@ -85,13 +84,17 @@ public class Asteroids : MonoBehaviour, IFlow
         Ship ship;
         collision.collider.gameObject.TryGetComponent<Ship>(out ship);
 
+
+
         if (ship != null)
-        {            
+        {
             GameObject.Destroy(gameObject);
+            ship.GetComponent<AudioSource>().Play();
             ShipManager.Instance.ShipDied();
         }
         else
         {
+            gameObject.GetComponent<AudioSource>().Play();
             Level size = collision.otherCollider.gameObject.GetComponent<Asteroids>().level;
             switch (size)
             {
@@ -123,5 +126,10 @@ public class Asteroids : MonoBehaviour, IFlow
 
     public void Initialize()
     {
+    }
+
+    public Vector2 GetSizeBigAsteroids()
+    {
+        return new Vector2(biggestSize, biggestSize);
     }
 }

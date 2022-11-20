@@ -4,7 +4,7 @@ using UnityEngine;
 public class MainEntry : MonoBehaviour
 {
     public List<AbstractConnector> connectors = new List<AbstractConnector>();
-
+    
     private Flow flow; 
     
     private void Awake()
@@ -34,4 +34,9 @@ public class MainEntry : MonoBehaviour
     {
         flow.PhysicsRefresh();
     }
+
+    //public Bounds GetWorldBounds()
+    //{
+    //    return worldBounds.bounds
+    //}
 }
